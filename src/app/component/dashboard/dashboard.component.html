@@ -1,1 +1,67 @@
-<p>dashboard works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 mt-5">
+            <div class="card border-0 shadow p-3">
+                <form #g="ngForm" (ngSubmit)="addTransaction(g)" novalidate>
+                    <div class="mb-3">
+                        <h4 class="text-center text-dark text-muted">Add Transaction</h4>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Loaner</label>
+                        <input type="email" class="form-control" name="loaner" ngModel required #first="ngModel">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail2" class="form-label">Loanee</label>
+                        <input type="email" class="form-control" name="loanee" ngModel>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputAmount1" class="form-label">Amount</label>
+                        <input type="text" class="form-control" name="amount" ngModel>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputDescription1" class="form-label">Description</label>
+                        <input type="text" class="form-control" name="description" ngModel>
+                    </div>
+                    <button>Add transaction</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-8 mt-5">
+            <h5 class="text-danger">Transaction list</h5>
+            <div class="card p-3">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Loaner</th>
+                            <th scope="col">Loanee</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let transaction of transactionList">
+                            <td>{{transaction.loaner}}</td>
+                            <td>{{transaction.loanee}}</td>
+                            <td>{{transaction.amount}}</td>
+                            <td>{{transaction.description}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form #f="ngForm" (ngSubmit)="logout(f)" novalidate>
+                        <div class="mb-3">
+                            <h4 class="text-dark text-muted">Logout</h4>
+                        </div>
+                        <button>Logout</button>
+                      </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

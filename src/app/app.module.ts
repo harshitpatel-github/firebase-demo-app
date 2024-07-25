@@ -27,7 +27,6 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp({"projectId":"fir-demo-app-ac7da","appId":"1:446747679428:web:18d5c29a2831e3cb6d8791","storageBucket":"fir-demo-app-ac7da.appspot.com","apiKey":"AIzaSyAJLPPaRiBQAfnw0q0KNkfgpXlyf4_anEA","authDomain":"fir-demo-app-ac7da.firebaseapp.com","messagingSenderId":"446747679428","measurementId":"G-VRGG468HMJ"}),
-    // AngularFireModule.initializeApp(environment.firebase),
     FormsModule,
   ],
   providers: [

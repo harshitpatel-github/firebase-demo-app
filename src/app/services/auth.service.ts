@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   // logout
-  logout(email: string, password: string) {
+  logout() {
     this.fireauth.signOut().then( () => {
       localStorage.removeItem('token');
       this.router.navigate(['/login']);
