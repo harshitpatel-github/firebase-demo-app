@@ -45,6 +45,53 @@
                             <td>{{transaction.loanee}}</td>
                             <td>{{transaction.amount}}</td>
                             <td>{{transaction.description}}</td>
+                            <td>
+                                <form (ngSubmit)="deleteTransaction(transaction)" novalidate>
+                                    <button>Delete</button>
+                                </form>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mt-5">
+            <h5 class="text-danger">Amount To Receive</h5>
+            <div class="card p-3">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Person</th>
+                            <th scope="col">Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let transaction of payList">
+                            <td>{{transaction.person}}</td>
+                            <td>{{transaction.amount}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mt-5">
+            <h5 class="text-danger">Amount to Pay</h5>
+            <div class="card p-3">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Person</th>
+                            <th scope="col">Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let transaction of receiveList">
+                            <td>{{transaction.person}}</td>
+                            <td>{{transaction.amount}}</td>
                           </tr>
                         </tbody>
                       </table>
