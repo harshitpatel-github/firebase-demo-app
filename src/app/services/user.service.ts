@@ -12,6 +12,7 @@ export class UserService {
   userInfoObj: UserInfo = {
     id: '',
     email: '',
+    name: '',
   }
 
   constructor(private afs: AngularFirestore) { }

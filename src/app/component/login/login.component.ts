@@ -4,6 +4,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { UserInfo } from '../../model/user-info';
+import { UsernameService } from '../../services/username.service';
+import { UserNameMap } from '../../model/user-name-map';
 
 @Component({
   selector: 'app-login',
@@ -15,11 +17,15 @@ export class LoginComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private afs: AngularFirestore,
-    private userService: UserService
+    private userService: UserService,
+    private usernameService: UsernameService,
   ){}
+
+  userNameMapList: UserNameMap[] = [];
 
   ngOnInit(): void {
     this.getAllUsers();
+    this.getUserNameByEmail();
   }
 
   login(f: NgForm) {
@@ -43,6 +49,8 @@ export class LoginComponent implements OnInit {
     if(currentUserList.length === 0) {
       console.log("New user... creating one")
       this.userService.userInfoObj.email = email
+      const userNameEmailMap = this.userNameMapList.filter(e=>e.email === email)
+      this.userService.userInfoObj.name = userNameEmailMap[0].name
       this.userService.addUser(this.userService.userInfoObj)
     } else {
       console.log("Existing user.. loging in")
@@ -50,6 +58,18 @@ export class LoginComponent implements OnInit {
     }
     console.log(this.userService.userInfoList)
     console.log(this.userService.userInfoObj)
+  }
+
+  getUserNameByEmail(){
+    this.usernameService.getUserNameToEmailMap().subscribe(res=>{
+      this.userNameMapList = res.map((e:any)=>{
+        const data = e.payload.doc.data();
+        data.id = e.payload.doc.id;
+        return data;
+      })
+    }, err => {
+      alert('error while fetching userName map data')
+    })
   }
 
   getAllUsers(){

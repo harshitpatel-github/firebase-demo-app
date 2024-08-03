@@ -38,9 +38,9 @@ export class DashboardComponent {
   ){}
 
   ngOnInit(): void {
-    this.getAllTransaction()
-    this.getAllPayList(this.userService.userInfoObj.email)
-    this.getAllReceiveList(this.userService.userInfoObj.email)
+    this.getAllTransaction(this.userService.userInfoObj.name)
+    this.getAllPayList(this.userService.userInfoObj.name)
+    this.getAllReceiveList(this.userService.userInfoObj.name)
   }
 
   logout(f: NgForm){
@@ -87,13 +87,13 @@ export class DashboardComponent {
     this.transaction.description = '';
   }
 
-  getAllTransaction(){
+  getAllTransaction(person: string){
     this.transactionService.getAllTransaction().subscribe(res=> {
       this.transactionList = res.map((e:any)=>{
         const data = e.payload.doc.data();
         data.id = e.payload.doc.id;
         return data;
-      })
+      }).filter(t=> (t.loaner === person || t.loanee === person))
     }, err => {
       alert('error while fetching transaction data')
     })

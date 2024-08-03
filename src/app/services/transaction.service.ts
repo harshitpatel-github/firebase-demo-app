@@ -25,7 +25,7 @@ export class TransactionService {
   getAllTransaction1() {
     return this.afs.collection('/Transaction',(x) =>
       x
-      .where('loaner', '==', 'test@gmail.com')
+      .where('loaner', '==', 'testUser')
       .where('amount', '>=', '170') 
       ).snapshotChanges();
   }
