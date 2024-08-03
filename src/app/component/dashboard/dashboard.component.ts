@@ -21,6 +21,8 @@ export class DashboardComponent {
   receiveListTransaction: Transaction[] = []
   payList: SimplifiedTransaction[] = []
   receiveList: SimplifiedTransaction[] = []
+  finalPayList: SimplifiedTransaction[] = []
+  finalReceiveList: SimplifiedTransaction[] = []
 
   transaction: Transaction = {
     id: '',
@@ -41,6 +43,7 @@ export class DashboardComponent {
     this.getAllTransaction(this.userService.userInfoObj.name)
     this.getAllPayList(this.userService.userInfoObj.name)
     this.getAllReceiveList(this.userService.userInfoObj.name)
+    this.combineAndAggregate(this.payList, this.receiveList)
   }
 
   logout(f: NgForm){
@@ -107,6 +110,7 @@ export class DashboardComponent {
         return data;
       })
       this.payList = this.generateSimplifiedPayTransactionList(this.payListTransaction)
+      this.combineAndAggregate(this.payList, this.receiveList)
     }, err => {
       alert('error while fetching payList data')
     })
@@ -120,6 +124,7 @@ export class DashboardComponent {
         return data;
       })
       this.receiveList = this.generateSimplifiedReceiveTransactionList(this.receiveListTransaction)
+      this.combineAndAggregate(this.payList, this.receiveList)
     }, err => {
       alert('error while fetching receiveList data')
     })
@@ -171,5 +176,48 @@ export class DashboardComponent {
     }
   
     return simplifiedTransactionList;
+  }
+
+  combineAndAggregate(payList: SimplifiedTransaction[], receiveList: SimplifiedTransaction[])/*: { payList: SimplifiedTransaction[], receiveList: SimplifiedTransaction[] }*/ {
+    const combinedMap: Map<string, number> = new Map();
+  
+    // Process payList
+    for (const transaction of payList) {
+      const person = transaction.person;
+      const amount = parseFloat(transaction.amount);
+  
+      if (combinedMap.has(person)) {
+        combinedMap.set(person, combinedMap.get(person)! + amount);
+      } else {
+        combinedMap.set(person, amount);
+      }
+    }
+  
+    // Process receiveList (subtract from combinedMap)
+    for (const transaction of receiveList) {
+      const person = transaction.person;
+      const amount = parseFloat(transaction.amount);
+  
+      if (combinedMap.has(person)) {
+        combinedMap.set(person, combinedMap.get(person)! - amount);
+      } else {
+        combinedMap.set(person, -amount); 
+      }
+    }
+  
+    // const finalPayList: SimplifiedTransaction[] = [];
+    // const finalReceiveList: SimplifiedTransaction[] = [];
+    this.finalPayList = [];
+    this.finalReceiveList = [];
+  
+    for (const [person, amount] of combinedMap.entries()) {
+      if (amount > 0) {
+        this.finalPayList.push({ person, amount: amount.toString() });
+      } else if (amount < 0) {
+        this.finalReceiveList.push({ person, amount: (-amount).toString() }); 
+      }
+    }
+  
+    // return { payList: finalPayList, receiveList: finalReceiveList };
   }
 }
